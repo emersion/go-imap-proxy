@@ -64,7 +64,6 @@ func (be *Backend) Login(username, password string) (backend.User, error) {
 		be: be,
 		c: c,
 		username: username,
-		password: password,
 	}
 	return u, nil
 }

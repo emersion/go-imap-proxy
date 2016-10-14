@@ -11,7 +11,7 @@ import (
 type user struct {
 	be *Backend
 	c *client.Client
-	username, password string
+	username string
 }
 
 func (u *user) Username() string {
@@ -53,15 +53,15 @@ func (u *user) GetMailbox(name string) (backend.Mailbox, error) {
 }
 
 func (u *user) CreateMailbox(name string) error {
-	return nil // TODO
+	return u.c.Create(name)
 }
 
 func (u *user) DeleteMailbox(name string) error {
-	return nil // TODO
+	return u.c.Delete(name)
 }
 
 func (u *user) RenameMailbox(existingName, newName string) error {
-	return nil // TODO
+		return u.c.Rename(existingName, newName)
 }
 
 func (u *user) Logout() error {
