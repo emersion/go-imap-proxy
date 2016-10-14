@@ -19,12 +19,22 @@ type Backend struct {
 	Addr string
 	Security Security
 	TLSConfig *tls.Config
+
+	unexported struct{}
 }
 
 func New(addr string) *Backend {
 	return &Backend{
 		Addr: addr,
 		Security: SecuritySTARTTLS,
+	}
+}
+
+func NewTLS(addr string, tlsConfig *tls.Config) *Backend {
+	return &Backend{
+		Addr: addr,
+		Security: SecurityTLS,
+		TLSConfig: tlsConfig,
 	}
 }
 

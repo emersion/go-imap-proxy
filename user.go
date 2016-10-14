@@ -49,7 +49,13 @@ func (u *user) GetMailbox(name string) (backend.Mailbox, error) {
 	if len(mailboxes) == 0 {
 		return nil, errors.New("No such mailbox")
 	}
-	return mailboxes[0], err
+
+	m := mailboxes[0]
+	if err := m.(*mailbox).ensureSelected(); err != nil {
+		return nil, err
+	}
+
+	return m, err
 }
 
 func (u *user) CreateMailbox(name string) error {
