@@ -89,8 +89,8 @@ func (m *mailbox) SearchMessages(uid bool, criteria *imap.SearchCriteria) ([]uin
 	}
 }
 
-func (m *mailbox) CreateMessage(flags []string, date time.Time, body []byte) error {
-	return m.u.c.Append(m.name, flags, date, imap.NewLiteral(body))
+func (m *mailbox) CreateMessage(flags []string, date time.Time, body imap.Literal) error {
+	return m.u.c.Append(m.name, flags, date, body)
 }
 
 func (m *mailbox) UpdateMessagesFlags(uid bool, seqset *imap.SeqSet, operation imap.FlagsOp, flags []string) error {
