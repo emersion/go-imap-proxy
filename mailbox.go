@@ -31,7 +31,8 @@ func (m *mailbox) Info() (*imap.MailboxInfo, error) {
 
 func (m *mailbox) Status(items []string) (*imap.MailboxStatus, error) {
 	if m.u.c.Mailbox != nil && m.u.c.Mailbox.Name == m.name {
-		return m.u.c.Mailbox, nil
+		mbox := *m.u.c.Mailbox
+		return &mbox, nil
 	}
 
 	return m.u.c.Status(m.name, items)
