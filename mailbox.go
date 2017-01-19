@@ -38,12 +38,12 @@ func (m *mailbox) Status(items []string) (*imap.MailboxStatus, error) {
 	return m.u.c.Status(m.name, items)
 }
 
-func (m *mailbox) Subscribe() error {
-	return m.u.c.Subscribe(m.name)
-}
-
-func (m *mailbox) Unsubscribe() error {
-	return m.u.c.Unsubscribe(m.name)
+func (m *mailbox) SetSubscribed(subscribe bool) error {
+	if subscribe {
+		return m.u.c.Subscribe(m.name)
+	} else {
+		return m.u.c.Unsubscribe(m.name)
+	}
 }
 
 func (m *mailbox) Check() error {
