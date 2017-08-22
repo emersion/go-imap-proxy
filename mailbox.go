@@ -7,13 +7,13 @@ import (
 )
 
 type mailbox struct {
-	u *user
+	u    *user
 	name string
 	info *imap.MailboxInfo
 }
 
 func (m *mailbox) ensureSelected() error {
-	if m.u.c.Mailbox != nil && m.u.c.Mailbox.Name == m.name {
+	if selectedMbox := m.u.c.Mailbox(); selectedMbox != nil && selectedMbox.Name == m.name {
 		return nil
 	}
 
@@ -30,9 +30,8 @@ func (m *mailbox) Info() (*imap.MailboxInfo, error) {
 }
 
 func (m *mailbox) Status(items []string) (*imap.MailboxStatus, error) {
-	if m.u.c.Mailbox != nil && m.u.c.Mailbox.Name == m.name {
-		mbox := *m.u.c.Mailbox
-		return &mbox, nil
+	if selectedMailbox := m.u.c.Mailbox(); selectedMailbox != nil && selectedMailbox.Name == m.name {
+		return selectedMailbox, nil
 	}
 
 	return m.u.c.Status(m.name, items)
