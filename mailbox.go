@@ -13,7 +13,7 @@ type mailbox struct {
 }
 
 func (m *mailbox) ensureSelected() error {
-	if m.u.c.Mailbox != nil && m.u.c.Mailbox.Name == m.name {
+	if m.u.c.Mailbox() != nil && m.u.c.Mailbox().Name == m.name {
 		return nil
 	}
 
@@ -29,9 +29,9 @@ func (m *mailbox) Info() (*imap.MailboxInfo, error) {
 	return m.info, nil
 }
 
-func (m *mailbox) Status(items []string) (*imap.MailboxStatus, error) {
-	if m.u.c.Mailbox != nil && m.u.c.Mailbox.Name == m.name {
-		mbox := *m.u.c.Mailbox
+func (m *mailbox) Status(items []imap.StatusItem) (*imap.MailboxStatus, error) {
+	if m.u.c.Mailbox() != nil && m.u.c.Mailbox().Name == m.name {
+		mbox := *m.u.c.Mailbox()
 		return &mbox, nil
 	}
 
@@ -54,7 +54,7 @@ func (m *mailbox) Check() error {
 	return m.u.c.Check()
 }
 
-func (m *mailbox) ListMessages(uid bool, seqset *imap.SeqSet, items []string, ch chan<- *imap.Message) error {
+func (m *mailbox) ListMessages(uid bool, seqset *imap.SeqSet, items []imap.FetchItem, ch chan<- *imap.Message) error {
 	defer close(ch)
 
 	if err := m.ensureSelected(); err != nil {
@@ -100,9 +100,9 @@ func (m *mailbox) UpdateMessagesFlags(uid bool, seqset *imap.SeqSet, operation i
 	}
 
 	if uid {
-		return m.u.c.UidStore(seqset, string(operation), flags, nil)
+		return m.u.c.UidStore(seqset, imap.StoreItem(operation), flags, nil)
 	} else {
-		return m.u.c.Store(seqset, string(operation), flags, nil)
+		return m.u.c.Store(seqset, imap.StoreItem(operation), flags, nil)
 	}
 }
 
