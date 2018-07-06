@@ -7,7 +7,7 @@ import (
 )
 
 type mailbox struct {
-	u *user
+	u    *user
 	name string
 	info *imap.MailboxInfo
 }
@@ -99,10 +99,12 @@ func (m *mailbox) UpdateMessagesFlags(uid bool, seqset *imap.SeqSet, operation i
 		return err
 	}
 
+	flagsInterface := imap.FormatStringList(flags)
+
 	if uid {
-		return m.u.c.UidStore(seqset, imap.StoreItem(operation), flags, nil)
+		return m.u.c.UidStore(seqset, imap.StoreItem(operation), flagsInterface, nil)
 	} else {
-		return m.u.c.Store(seqset, imap.StoreItem(operation), flags, nil)
+		return m.u.c.Store(seqset, imap.StoreItem(operation), flagsInterface, nil)
 	}
 }
 
