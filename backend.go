@@ -3,6 +3,7 @@ package proxy
 import (
 	"crypto/tls"
 
+    "github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/backend"
 	"github.com/emersion/go-imap/client"
 )
@@ -64,7 +65,7 @@ func (be *Backend) login(username, password string) (*client.Client, error) {
 	return c, nil
 }
 
-func (be *Backend) Login(username, password string) (backend.User, error) {
+func (be *Backend) Login(_ *imap.ConnInfo,username, password string) (backend.User, error) {
 	c, err := be.login(username, password)
 	if err != nil {
 		return nil, err
