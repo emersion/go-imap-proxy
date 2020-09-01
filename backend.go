@@ -3,7 +3,7 @@ package proxy
 import (
 	"crypto/tls"
 
-    "github.com/emersion/go-imap"
+	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/backend"
 	"github.com/emersion/go-imap/client"
 )
